@@ -1,0 +1,11 @@
+server:
+  port: 8888
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb+srv://user:passwordA@cluster0.kkg2x1y.mongodb.net/?retryWrites=true&w=majority
+      database: bank
+
+bank:
+  overdraft-limit: 500
