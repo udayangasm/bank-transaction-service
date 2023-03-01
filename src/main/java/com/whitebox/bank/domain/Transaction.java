@@ -40,4 +40,8 @@ public class Transaction {
     public void setAmount(double amount) {
         this.amount = amount;
     }
+
+    public String toString(){
+        return "[ accountId: "+accountId+" ,type: "+type+" , amount: "+amount+" ,created: "+created+" ]";
+    }
 }

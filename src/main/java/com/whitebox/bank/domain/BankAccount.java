@@ -41,4 +41,8 @@ public class BankAccount {
     public void setBalance(double balance) {
         this.balance = balance;
     }
+
+    public String toString(){
+        return "[ accountId: "+accountId+" ,email: "+email+" , name: "+name+" ,balance: "+balance+" ]";
+    }
 }

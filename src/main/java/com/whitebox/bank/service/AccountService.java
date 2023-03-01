@@ -7,6 +7,8 @@ import com.whitebox.bank.exception.UserAlreadyExistsException;
 import com.whitebox.bank.service.cqrs.CommandServiceImpl;
 import com.whitebox.bank.service.cqrs.QueryServiceImpl;
 import io.micrometer.core.instrument.util.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,8 @@ import java.util.List;
 
 @Service
 public class AccountService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(AccountService.class);
 
     @Autowired
     CommandServiceImpl commandService;
@@ -23,8 +27,13 @@ public class AccountService {
 
     public BankAccount createBankAccount(BankAccount bankAccount) {
 
-        validateInputs(bankAccount);
-        return commandService.createBankAccount(bankAccount);
+        try{
+            validateInputs(bankAccount);
+            return commandService.createBankAccount(bankAccount);
+        }catch (Exception ex){
+            LOG.error(ex.getLocalizedMessage());
+            throw ex;
+        }
     }
 
     private void validateInputs(BankAccount bankAccount) {

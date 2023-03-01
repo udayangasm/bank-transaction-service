@@ -8,6 +8,8 @@ import com.whitebox.bank.exception.MandatoryFieldNotFoundException;
 import com.whitebox.bank.service.cqrs.CommandServiceImpl;
 import com.whitebox.bank.service.cqrs.QueryServiceImpl;
 import io.micrometer.core.instrument.util.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,8 @@ import java.util.List;
 @Service
 public class TransactionService {
 
+    private static final Logger LOG = LoggerFactory.getLogger(TransactionService.class);
+
     @Autowired
     CommandServiceImpl commandService;
 
@@ -26,9 +30,14 @@ public class TransactionService {
 
     public void addTransaction(Transaction transaction) {
 
-        validateInput(transaction);
-        transaction.setCreated(LocalDateTime.now());
-        commandService.addTransaction(transaction);
+        try{
+            validateInput(transaction);
+            transaction.setCreated(LocalDateTime.now());
+            commandService.addTransaction(transaction);
+        }catch (Exception ex){
+            LOG.error(ex.getLocalizedMessage());
+            throw ex;
+        }
     }
 
     private void validateInput(Transaction transaction) {
